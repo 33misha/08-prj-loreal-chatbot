@@ -1,64 +1,139 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat Assistant</title>
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
+    <meta
+      name="description"
+      content="Explore L’Oréal products and build a beauty routine with a student-built AI beauty assistant."
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>L’Oréal Beauty Assistant | Student Project</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
+    <!-- Keyboard users can jump directly to the message field. -->
+    <a class="skip-link" href="#userInput">Skip to chat</a>
+
     <div class="page-wrapper">
-      <!------- Header / Branding ------->
+      <!-- Use the supplied logo without stretching or recoloring it. -->
       <header class="site-header">
-        <h1 class="site-title">Smart Product Advisor</h1>
+        <img
+          class="brand-logo"
+          src="img/loreal-logo.png"
+          alt="L’Oréal"
+          width="500"
+          height="91"
+        />
+        <span class="header-label">Beauty assistant</span>
       </header>
 
-      <!------- Chat Area ------->
-      <main>
-        <section class="chatbox">
-          <div id="chatWindow" class="chat-window">
-            <!-- messages will be appended here via JS -->
+      <main class="main-layout">
+        <!-- A short introduction explains what the assistant can help with. -->
+        <section class="introduction" aria-labelledby="pageTitle">
+          <p class="eyebrow">Beauty, made personal</p>
+          <h1 id="pageTitle">Your beauty.<br />Your conversation.</h1>
+          <p class="intro-text">
+            Explore L’Oréal products and find a routine that fits you. Start with
+            your skin, your hair, or simply what you want to discover.
+          </p>
+          <div class="category-list" role="group" aria-label="Topics to explore">
+            <span>Skincare</span>
+            <span>Makeup</span>
+            <span>Haircare</span>
+            <span>Fragrance</span>
+          </div>
+          <p class="intro-note">A little guidance. A more personal routine.</p>
+        </section>
+
+        <section class="chatbox" aria-labelledby="chatTitle">
+          <div class="chat-header">
+            <div>
+              <p class="eyebrow">L’Oréal beauty assistant</p>
+              <h2 id="chatTitle">Let’s find your routine.</h2>
+            </div>
+            <button id="resetBtn" class="reset-button" type="button">
+              New chat
+            </button>
           </div>
 
-          <form id="chatForm" class="chat-form">
-            <label for="userInput" class="visually-hidden">Message</label>
-            <input
-              id="userInput"
-              name="userInput"
-              type="text"
-              placeholder="Ask me about products or routines…"
-              autocomplete="off"
-              required
-            />
-            <button type="submit" id="sendBtn">
-              <span class="material-icons">send</span>
-              <span class="visually-hidden">Send</span>
+          <!-- Clicking a starter question fills and submits the chat form. -->
+          <div class="starter-prompts" role="group" aria-label="Suggested questions">
+            <button
+              type="button"
+              data-question="Help me build a simple L’Oréal skincare routine."
+            >
+              Build a skincare routine
             </button>
-          </form>
+            <button
+              type="button"
+              data-question="Which L’Oréal products could help with dry hair?"
+            >
+              Care for dry hair
+            </button>
+            <button
+              type="button"
+              data-question="Help me choose L’Oréal makeup for a natural look."
+            >
+              Find my makeup look
+            </button>
+          </div>
+
+          <!-- This panel changes with each question, while the chat keeps its history. -->
+          <section id="latestQuestion" class="latest-question" hidden>
+            <h3>Your latest question</h3>
+            <p id="latestQuestionText"></p>
+          </section>
+
+          <!-- New message bubbles are created by script.js and announced politely. -->
+          <div
+            id="chatWindow"
+            class="chat-window"
+            role="log"
+            aria-label="Conversation with the L’Oréal beauty assistant"
+            aria-live="polite"
+            aria-relevant="additions text"
+            tabindex="0"
+          ></div>
+
+          <div class="composer">
+            <form id="chatForm" class="chat-form">
+              <label for="userInput">What would you like to explore?</label>
+              <div class="input-row">
+                <input
+                  id="userInput"
+                  name="userInput"
+                  type="text"
+                  placeholder="Ask about products or routines…"
+                  autocomplete="off"
+                  maxlength="2000"
+                  aria-describedby="inputHelp chatStatus"
+                  required
+                />
+                <button type="submit" id="sendBtn" class="send-button">
+                  <span>Send</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 12h15M13 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              <p id="inputHelp" class="input-help">
+                Share your preferences for more personal suggestions.
+              </p>
+            </form>
+            <p id="chatStatus" class="chat-status" role="status" aria-live="polite"></p>
+          </div>
         </section>
       </main>
 
-      <!------- Footer Links ------->
+      <!-- Identify the classroom project and replace the starter's placeholder links. -->
       <footer class="site-footer">
-        <p>&copy; 2025 Company Name. All rights reserved.</p>
-        <nav>
-          <!-- These URLs are placeholders -->
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Contact</a>
-        </nav>
+        <p>An independent student project exploring L’Oréal beauty.</p>
+        <a href="https://www.loreal.com/en/">Explore L’Oréal <span aria-hidden="true">↗</span></a>
       </footer>
     </div>
 
+    <!-- Plain JavaScript handles all chat behavior; no packages or API key are needed here. -->
     <script src="script.js"></script>
   </body>
 </html>
