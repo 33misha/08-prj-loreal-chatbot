@@ -1,12 +1,12 @@
 # Project 8 submission preparation
 
-These drafts use the project’s implementation and your comments about the experience. Read and personalize them before putting them in your assignment document. Keep only statements that describe your own experience. Live AI behavior and publication must be verified before submission.
+These drafts use the project’s implementation and your comments about the experience. Read and personalize them before putting them in your assignment document. Keep only statements that describe your own experience. The frontend is published; successful live AI behavior still needs verification before submission.
 
 ## 1. Live project URL
 
-Paste the verified GitHub Pages URL here: **[Add your working published URL]**
+**Published project URL:** [https://33misha.github.io/08-prj-loreal-chatbot/](https://33misha.github.io/08-prj-loreal-chatbot/)
 
-The expected address for this repository is `https://33misha.github.io/08-prj-loreal-chatbot/`. It returned HTTP 404 during the current check. Confirm it actually loads the finished project in a private browser before submitting it.
+The page and its current versioned CSS/JavaScript assets returned HTTP 200 on November 14, 2026. The Worker currently returns HTTP 500 because its server-side secret is missing. The class administrator must restore that configuration before real replies, relevance, and memory can be verified. Test the finished site in a private browser after the final review changes are published.
 
 ## 1B. LevelUps implemented
 
@@ -20,9 +20,9 @@ The expected address for this repository is `https://33misha.github.io/08-prj-lo
 
 The most challenging part for me was connecting the Cloudflare Worker to the API. There were several pieces that needed to work together: the chat form had to collect a question, JavaScript had to send it in the right format, and the Worker had to communicate with the AI service. Seeing how the different digital tools connected was the most interesting part of the project.
 
-The project helped me understand why it is useful to check each connection separately. For example, a live test reached the Worker but returned an error saying that the service had no credits remaining. The frontend can explain that problem to the user, but the Worker owner still needs to resolve it before successful AI replies can be tested. I learned that a working interface and a working external service both matter when building an AI-powered application.
+To investigate the connection, I checked the Worker’s metrics, and the project connection was tested separately from the page layout. The website now loads online and sends questions to the Worker. During the November 14 review, the Worker reported that its server-side configuration was missing. The class administrator still needs to restore that configuration before a successful AI reply can be verified. This helped me understand why it is useful to check each connection separately and why an online interface and an available external service both matter.
 
-**Personalize if needed:** Add one troubleshooting step you personally tried. If the service-credit problem has been resolved, describe the actual resolution rather than leaving the unfinished status above.
+**Review before submitting:** Confirm that this describes your own involvement, explain one troubleshooting step in your own words, and update the outcome once the administrator restores the service. Do not claim that the connection or AI answers were fully fixed until you have tested them successfully.
 
 ## 3. Reflection: interview and networking talking points — 10 points
 
@@ -48,17 +48,19 @@ On the technical side, the project demonstrates asynchronous JavaScript, convers
 
 ## Final submission checklist
 
-- [ ] Have the Worker owner resolve `credit_balance_exhausted`; waiting or retrying cannot restore exhausted service credits.
+- [ ] Have the class administrator restore the deployed Worker’s missing `OPENAI_API_KEY` secret and verify its configuration; do not add a key to the frontend.
+- [ ] Recheck the live response after configuration is restored. Earlier exhausted-credit errors may need separate administrator action if they return.
 - [ ] Confirm the live Worker returns an actual assistant reply.
 - [ ] Verify relevant answers and polite refusal of unrelated questions.
 - [ ] Verify conversation memory with a follow-up question.
 - [x] Check the logo, latest-question panel, and distinct chat bubbles locally in Chrome.
-- [x] Test desktop, mobile widths, keyboard navigation, and error recovery with simulated Worker replies.
+- [x] Pass all 35 November 14 local Chrome checks, including desktop/mobile layouts, keyboard navigation, script-failure fallback, incomplete answers, and error recovery with simulated Worker replies.
 - [ ] Repeat the browser checks on the published site with the live service restored.
 - [ ] Confirm the deployed Worker uses the required model and keeps its key as a Worker secret; ask the class administrator if needed.
-- [ ] Commit and push the completed files.
-- [ ] Publish the frontend with GitHub Pages and test the public URL in a private browser.
-- [ ] Replace the URL placeholder and review all three reflection answers.
+- [x] Commit and push the original implementation and cache-refresh fix.
+- [x] Publish the frontend with GitHub Pages and confirm that the public page and versioned assets are reachable.
+- [ ] Open the published site in a private browser and confirm that the latest review fixes load (asset version `20261114-1`).
+- [ ] Review all three reflection drafts for personal accuracy and update the final troubleshooting outcome.
 - [ ] Copy the URL, LevelUps, and reflections into the assignment document.
 - [ ] Export the completed assignment document as a PDF and upload it to HQ.
 

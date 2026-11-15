@@ -9,7 +9,7 @@
     />
     <title>L’Oréal Beauty Assistant | Student Project</title>
     <!-- Update this version when assets change so browsers download the new styling. -->
-    <link rel="stylesheet" href="style.css?v=20261112-1" />
+    <link rel="stylesheet" href="style.css?v=20261114-1" />
   </head>
 
   <body>
@@ -53,7 +53,7 @@
               <p class="eyebrow">L’Oréal beauty assistant</p>
               <h2 id="chatTitle">Let’s find your routine.</h2>
             </div>
-            <button id="resetBtn" class="reset-button" type="button">
+            <button id="resetBtn" class="reset-button" type="button" disabled>
               New chat
             </button>
           </div>
@@ -63,18 +63,21 @@
             <button
               type="button"
               data-question="Help me build a simple L’Oréal skincare routine."
+              disabled
             >
               Build a skincare routine
             </button>
             <button
               type="button"
               data-question="Which L’Oréal products could help with dry hair?"
+              disabled
             >
               Care for dry hair
             </button>
             <button
               type="button"
               data-question="Help me choose L’Oréal makeup for a natural look."
+              disabled
             >
               Find my makeup look
             </button>
@@ -95,10 +98,17 @@
             aria-live="polite"
             aria-relevant="additions text"
             tabindex="0"
-          ></div>
+          >
+            <!-- Keep useful guidance visible if the chat script cannot start. -->
+            <p class="chat-fallback">
+              The chat hasn’t started. Refresh this page to try again. If this
+              message remains, enable JavaScript in your browser or contact your
+              instructor.
+            </p>
+          </div>
 
           <div class="composer">
-            <form id="chatForm" class="chat-form">
+            <form id="chatForm" class="chat-form" method="post">
               <label for="userInput">What would you like to explore?</label>
               <div class="input-row">
                 <input
@@ -110,8 +120,9 @@
                   maxlength="2000"
                   aria-describedby="inputHelp chatStatus"
                   required
+                  disabled
                 />
-                <button type="submit" id="sendBtn" class="send-button">
+                <button type="submit" id="sendBtn" class="send-button" disabled>
                   <span>Send</span>
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <path d="M4 12h15M13 5l7 7-7 7" />
@@ -135,6 +146,6 @@
     </div>
 
     <!-- Plain JavaScript handles all chat behavior; no packages or API key are needed here. -->
-    <script src="script.js?v=20261112-1"></script>
+    <script src="script.js?v=20261114-1"></script>
   </body>
 </html>

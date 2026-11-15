@@ -1,2 +1,7 @@
-# Secrets file containing API keys
-secrets.js
+# Never store credentials in this project, including files excluded from Git.
+secret*.js
+.env
+.env.*
+
+# Some local browser checks generate this diagnostic file.
+debug.log

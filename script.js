@@ -50,6 +50,8 @@ function setLoading(loading) {
   isWaiting = loading;
   sendBtn.disabled = loading;
   resetBtn.disabled = loading;
+  // The HTML starts disabled so a missing script cannot submit questions into the URL.
+  userInput.disabled = false;
   userInput.readOnly = loading;
   chatWindow.setAttribute("aria-busy", `${loading}`);
   starterButtons.forEach((button) => {
@@ -61,10 +63,11 @@ function setLoading(loading) {
 function getErrorMessage(status, data) {
   let error = data?.error;
   // The deployed class Worker may place the provider's error inside a JSON string.
-  if (typeof data?.details === "string") {
+  if (data?.details) {
     try {
-      const details = JSON.parse(data.details);
-      error = details.error || error;
+      const details =
+        typeof data.details === "string" ? JSON.parse(data.details) : data.details;
+      error = details?.error || error;
     } catch {
       // Keep the general error message if the extra details are not valid JSON.
     }
@@ -83,11 +86,19 @@ function getErrorMessage(status, data) {
   if (error?.type === "insufficient_quota" || serviceLimitCodes.includes(code)) {
     return "The assistant has reached its service limit. Please let your instructor know so they can restore access.";
   }
+  // Recognize the class Worker's setup error without showing internal configuration names.
+  const errorText = typeof error === "string" ? error : error?.message || "";
+  if (code === "not_configured" || /misconfigured|not configured|secret is not set/i.test(errorText)) {
+    return "The assistant’s setup needs attention. Please let your instructor know so they can restore access.";
+  }
   if (status === 429) {
     return "The assistant is receiving too many requests. Please wait a moment before trying again.";
   }
   if (status === 401 || status === 403) {
     return "The assistant’s connection needs attention. Please let your instructor know.";
+  }
+  if (status === 504) {
+    return "The reply took too long. Please try your question again.";
   }
   return "Sorry, I couldn’t get a reply. Please try again in a moment.";
 }
@@ -170,11 +181,25 @@ chatForm.addEventListener("submit", async (event) => {
       throw new Error(getErrorMessage(response.status, data));
     }
 
-    const reply = data?.choices?.[0]?.message?.content;
+    const choice = data?.choices?.[0];
+    const message = choice?.message;
+    // A provider refusal can contain useful text even when normal content is empty.
+    const reply =
+      typeof message?.content === "string" && message.content.trim()
+        ? message.content
+        : message?.refusal;
     if (typeof reply !== "string" || !reply.trim()) {
       throw new Error("The assistant returned an empty reply. Please try again.");
     }
     replyText.textContent = reply.trim();
+
+    // A length-limited answer should never look like a fully completed response.
+    if (choice.finish_reason === "length") {
+      const note = document.createElement("p");
+      note.className = "message-note";
+      note.textContent = "This reply may be incomplete. Ask “Please continue” for the rest.";
+      assistantMessage.appendChild(note);
+    }
 
     // Save only completed exchanges. Failed requests never become AI conversation history.
     conversationHistory.push(
@@ -184,7 +209,10 @@ chatForm.addEventListener("submit", async (event) => {
     // Send the most recent 19 exchanges to keep requests a reasonable size.
     conversationHistory = conversationHistory.slice(-MAX_HISTORY_MESSAGES);
     userInput.value = "";
-    chatStatus.textContent = "Reply received. You can ask a follow-up question.";
+    chatStatus.textContent =
+      choice.finish_reason === "length"
+        ? "Reply received. You can ask the assistant to continue the incomplete answer."
+        : "Reply received. You can ask a follow-up question.";
   } catch (error) {
     assistantMessage.classList.add("error");
     if (controller.signal.aborted) {
@@ -207,3 +235,5 @@ chatForm.addEventListener("submit", async (event) => {
 
 // Display the initial welcome without taking focus away from the page heading.
 startNewChat();
+// Enable the initially disabled controls only after the chat has initialized successfully.
+setLoading(false);

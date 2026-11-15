@@ -298,6 +298,19 @@ h2 {
   white-space: pre-wrap;
 }
 
+/* Keep fallback guidance and incomplete-answer notices readable in the chat. */
+.chat-fallback {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.message-note {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .msg.error {
   border: 1px dashed var(--ink);
   background: var(--paper);
